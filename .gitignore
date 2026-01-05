@@ -27,4 +27,5 @@ Thumbs.db
 *.sql.gz
 *.log
 
+# Configuración de la Base de Datos
 src/com/anncode/amazonviewer/db/DBConfig.java

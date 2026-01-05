@@ -1,10 +1,10 @@
 # Amazon Viewer: Sistema de Gestión de Contenido Multimedia
-<img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white" alt="Java">
-<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
-<img src="https://img.shields.io/badge/JDBC-005A9C?style=for-the-badge&logo=java&logoColor=white" alt="JDBC">
-<img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux">
-<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git">
-<img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown">
+![Java](https://img.shields.io/badge/Java-21%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![JDBC](https://img.shields.io/badge/JDBC-Connector--J-005A9C?style=for-the-badge&logo=java&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-Ubuntu_20.04-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Platzi](https://img.shields.io/badge/Platzi-Student-98ca3f?style=for-the-badge&logo=platzi&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)
 
 > **Estado del Proyecto:** Desarrollo de Arquitectura y Persistencia.
 ---
@@ -57,23 +57,11 @@ Implementación del patrón **Data Access Object**. Las interfaces definen los c
 
 ## Configuración y Despliegue
 
-### Esquema de Base de Datos
-El sistema requiere una estructura relacional normalizada. Asegúrese de que su tabla `viewed` (tabla puente) esté correctamente vinculada:
+### Requisitos Previos
 
-| Tabla | Función |
-| :--- | :--- |
-| `movie` / `serie` | Catálogo principal de material audiovisual. |
-| `chapter` | Elementos dependientes de series con relación FK. |
-| `viewed` | Tabla transaccional que registra: `id_user`, `id_element`, `id_material` y `date`. |
+* Instalar MySQL Server y crear la base de datos amazonviewer.
+* Configurar las credenciales en `src/com/anncode/amazonviewer/db/DBConfig.java`
 
-### Preparación de la Base de Datos
-Para inicializar el esquema de datos, ejecute las siguientes sentencias SQL en su gestor de base de datos:
-
-```sql
-CREATE DATABASE amazon_viewer;
--- Nota: Asegúrese de ejecutar los scripts de creación para las tablas: 
--- movie, serie, chapter, material, user y viewed.
-```
 ### Configuración de Conexión
 
 La configuración de acceso a datos se centraliza en la lógica de conexión del sistema.
@@ -83,25 +71,36 @@ String URL = "jdbc:mysql://localhost:3306/amazon_viewer
 ```
 Asegúrese de ajustar los parámetros de red y zona horaria para garantizar la precisión de los reportes:
 
-* **Parámetros de Conexión:** Valide que la constante `URL_PARAMS` incluya los flags de seguridad necesarios para drivers modernos:
-    ```java
-    public static final String URL_PARAMS = "?useSSL=false"
-                                          + "&serverTimezone=America/Guayaquil"
-                                          + "&allowPublicKeyRetrieval=true";
-    ```
 ### Sincronización Horaria (Ecuador)
 Para garantizar la precisión en los reportes diarios, la conexión está configurada para **Ecuador**:
 ```java
-// DBConfig.java
-public static final String URL_PARAMS = "?useSSL=false&serverTimezone=America/Guayaquil";
+public static final String URL_PARAMS = "?useSSL=false"
+                                      + "&serverTimezone=America/Guayaquil"
+                                      + "&allowPublicKeyRetrieval=true";
 ```
 
-### Requisitos Previos
+## Base de Datos
+El script para recrear la estructura de la base de datos se encuentra en la carpeta `/db`.
+Para importar el esquema, utilice el siguiente comando en su terminal:
+```bash
+  mysql -u tu_usuario -p < db/amazonviewer.sql
+```
+| Tabla | Función |
+| :--- | :--- |
+| `movie` / `serie` | Catálogo principal de material audiovisual. |
+| `chapter` | Elementos dependientes de series con relación FK. |
+| `viewed` | Tabla transaccional que registra: `id_user`, `id_element`, `id_material` y `date`. |
 
-* Instalar MySQL Server y crear la base de datos amazonviewer.
-* Configurar las credenciales en `src/com/anncode/amazonviewer/db/DBConfig.java`
+### Creación de la Base de Datos
+Para inicializar el esquema de datos, ejecute las siguientes sentencias SQL en su gestor de base de datos:
 
-### Compilación y Ejecución Manual
+```sql
+CREATE DATABASE amazonviewer;
+-- Nota: Asegúrese de ejecutar los scripts de creación para las tablas: 
+-- movie, serie, chapter, material, user y viewed.
+```
+---
+## Compilación y Ejecución Manual
 **Pipeline de Compilación (Terminal Linux)**
 
 Para compilar y ejecutar el sistema desde la interfaz de línea de comandos en sistemas Unix/Linux, utilice los siguientes comandos:
@@ -126,6 +125,8 @@ El proyecto sigue una organización de paquetes estándar de Java, separando la 
 AmazonViewer/
 ├── bin/                        # Archivos binarios compilados (.class)
 ├── libs/                       # Librerías externas (Connector/J)
+├── db/                 
+│   └── amazonviewer.sql        # Esquema de base de datos
 ├── src/                        # Código fuente del proyecto
 │   └── com/
 │       └── anncode/

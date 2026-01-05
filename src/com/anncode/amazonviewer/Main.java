@@ -433,7 +433,12 @@ public class Main implements UserDAO {
                         .map(s -> {
                             Chapter chapter = s.getChapters().stream()
                                     .filter(c -> c.getId() == id).findFirst().get();
-                            return "\nSERIE: " + s.getTitle() + chapter.toString();
+                            return "\nSERIE: " + s.getTitle() +
+                                    "\n GÉNERO: " + s.getGenre() +
+                                    "\n CREADOR: " + s.getCreator() +
+                                    "\n DURACIÓN: " + s.getDuration() + " min." +
+                                    "\n AÑO: " + s.getYear() +
+                                    "\n TEMPORADAS: " + s.getSessionQuantity() + chapter.toString();
                         }).findFirst().orElse(null);
             }
             case 4 -> books.stream().filter(b -> b.getId() == id).findFirst().orElse(null);
