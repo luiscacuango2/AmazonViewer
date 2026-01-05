@@ -1,14 +1,17 @@
 # Amazon Viewer: Sistema de Gestión de Contenido Multimedia
-![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+<img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white" alt="Java">
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/JDBC-005A9C?style=for-the-badge&logo=java&logoColor=white" alt="JDBC">
+  <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux">
+  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git">
+  <img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown">
 
 > **Estado del Proyecto:** Desarrollo de Arquitectura y Persistencia.
-
-Amazon Viewer es una solución integral desarrollada en Java SE para la administración y seguimiento de consumo de material visual y editorial. El sistema implementa una arquitectura basada en el paradigma orientado a objetos, garantizando la persistencia de datos mediante el uso de bases de datos relacionales y permitiendo la generación de reportes detallados de actividad.
+---
+## 📋 Resumen Ejecutivo
+**Amazon Viewer** es una solución robusta desarrollada en **Java SE** diseñada para la gestión, catalogación y seguimiento de consumo de contenido multimedia (Cine/TV) y editorial. El sistema destaca por su arquitectura desacoplada, implementando el patrón **DAO (Data Access Object)** para garantizar una persistencia de datos íntegra en motores **MySQL**, optimizada específicamente para la zona horaria de Ecuador (GMT-5).
 
 ---
-
 ## Especificaciones Funcionales
 
 * **Catálogo Multimaterial:** Clasificación jerárquica de películas, series, capítulos, libros y revistas.
@@ -21,17 +24,47 @@ Amazon Viewer es una solución integral desarrollada en Java SE para la administ
 
 ## Requisitos del Sistema
 
+## Tecnologías y Herramientas
+* **Lenguaje:** [Java JDK 21+](https://www.oracle.com/java/technologies/downloads/) - Core del sistema y lógica de negocio.
+* **Base de Datos:** [MySQL 8.0+](https://www.mysql.com/) - Almacenamiento relacional de metadatos y transacciones.
+* **Conectividad:** [JDBC Connector/J](https://dev.mysql.com/downloads/connector/j/) - Puente de comunicación entre la aplicación y el servidor DB.
+* **Entorno:** [Linux / Unix](https://www.linux.org/) - Sistema operativo base para despliegue y scripts de compilación.
+* **Control de Versiones:** [Git](https://git-scm.com/) - Gestión de cambios y colaboración.
+
+---
 ### Entorno de Ejecución
 * **Sistema Operativo:** Distribuciones basadas en Linux (Ubuntu 20.04 LTS o superior recomendadas).
-* **Java Development Kit:** Versión 11 o superior.
+* **Java Development Kit:** Versión 21 o superior.
 * **Gestor de Base de Datos:** MySQL Server 8.0 o superior.
 
 ### Dependencias Externas
 * **JDBC Driver:** MySQL Connector/J (debe incluirse en el directorio de librerías del proyecto).
+---
 
+## Arquitectura del Sistema
+El proyecto se basa en una arquitectura de N-Capas para facilitar el mantenimiento y la escalabilidad:
+
+### 1. Capa de Modelo (Entities)
+Representación de objetos del mundo real mediante POJOs (`Movie`, `Serie`, `Book`, `Chapter`). Implementa herencia y polimorfismo para optimizar atributos comunes como título, género y duración.
+
+### 2. Capa de Persistencia (DAO)
+Implementación del patrón **Data Access Object**. Las interfaces definen los contratos de persistencia, mientras que los métodos `default` gestionan las consultas SQL, asegurando que la lógica de la base de datos no contamine la lógica de negocio.
+
+### 3. Capa de Utilidades y Reportes
+* **AmazonUtil:** Gestión de entradas de usuario y validaciones.
+* **Report Module:** Generación dinámica de archivos `.txt` utilizando **Java Streams** para filtrar contenido visto en fechas específicas.
 ---
 
 ## Configuración y Despliegue
+
+### Esquema de Base de Datos
+El sistema requiere una estructura relacional normalizada. Asegúrese de que su tabla `viewed` (tabla puente) esté correctamente vinculada:
+
+| Tabla | Función |
+| :--- | :--- |
+| `movie` / `serie` | Catálogo principal de material audiovisual. |
+| `chapter` | Elementos dependientes de series con relación FK. |
+| `viewed` | Tabla transaccional que registra: `id_user`, `id_element`, `id_material` y `date`. |
 
 ### Preparación de la Base de Datos
 Para inicializar el esquema de datos, ejecute las siguientes sentencias SQL en su gestor de base de datos:
@@ -43,23 +76,44 @@ CREATE DATABASE amazon_viewer;
 ```
 ### Configuración de Conexión
 
-La configuración de acceso a datos se centraliza en la lógica de conexión del sistema. Asegúrese de ajustar los parámetros de red y zona horaria para garantizar la precisión de los reportes:
+La configuración de acceso a datos se centraliza en la lógica de conexión del sistema.
 ```Java
 // Ejemplo de configuración en la cadena de conexión
-String URL = "jdbc:mysql://localhost:3306/amazon_viewer?serverTimezone=America/Guayaquil";
+String URL = "jdbc:mysql://localhost:3306/amazon_viewer
 ```
+Asegúrese de ajustar los parámetros de red y zona horaria para garantizar la precisión de los reportes:
+
+* **Parámetros de Conexión:** Valide que la constante `URL_PARAMS` incluya los flags de seguridad necesarios para drivers modernos:
+    ```java
+    public static final String URL_PARAMS = "?useSSL=false"
+                                          + "&serverTimezone=America/Guayaquil"
+                                          + "&allowPublicKeyRetrieval=true";
+    ```
+### Sincronización Horaria (Ecuador)
+Para garantizar la precisión en los reportes diarios, la conexión está configurada para **Ecuador**:
+```java
+// DBConfig.java
+public static final String URL_PARAMS = "?useSSL=false&serverTimezone=America/Guayaquil";
+```
+
+### Requisitos Previos
+
+* Instalar MySQL Server y crear la base de datos amazonviewer.
+* Configurar las credenciales en `src/com/anncode/amazonviewer/db/DBConfig.java`
+
 ### Compilación y Ejecución Manual
+**Pipeline de Compilación (Terminal Linux)**
 
 Para compilar y ejecutar el sistema desde la interfaz de línea de comandos en sistemas Unix/Linux, utilice los siguientes comandos:
 ```Bash
-# Crear directorio de salida
-mkdir -p bin
+# 1. Limpiar y preparar entorno
+rm -rf bin && mkdir bin
 
-# Compilación
-javac -d bin -cp "libs/*" src/com/anncode/amazonviewer/*.java
+# 2. Compilar con dependencias de MySQL
+javac -d bin -cp "libs/mysql-connector-j.jar" src/com/anncode/amazonviewer/**/*.java
 
-# Ejecución
-java -cp "bin:libs/mysql-connector-java.jar" com.anncode.amazonviewer.Main
+# 3. Ejecutar la aplicación
+java -cp "bin:libs/mysql-connector-j.jar" com.anncode.amazonviewer.Main
 ```
 ---
 ## Estructura de Directorios
@@ -87,19 +141,43 @@ AmazonViewer/
 └── CONTRIBUTING.md             # Guía para colaboradores
 ```
 ---
+## Documentación de Código (JavaDoc)
+
+El proyecto utiliza **JavaDoc** para generar documentación técnica automatizada a partir del código fuente. Se han documentado exhaustivamente las clases, interfaces y métodos siguiendo las convenciones de Oracle para garantizar que cualquier desarrollador pueda entender la lógica de negocio y la arquitectura de persistencia.
+
+### Estándares de Documentación Aplicados:
+* **@author:** Identifica al desarrollador responsable del componente **Luigi** (Luis Cacuango).
+* **@param:** Detalla los parámetros de entrada en métodos críticos como los de la capa DAO.
+* **@return:** Explica el tipo de dato y el significado del valor devuelto.
+* **@see:** Vincula clases relacionadas, útil para navegar entre modelos y sus interfaces DAO.
+
+### Generación de la Documentación HTML
+Si deseas generar los archivos de ayuda en formato HTML localmente, ejecuta el siguiente comando desde la raíz del proyecto:
+
+```bash
+# Crear directorio para la documentación
+mkdir -p docs/javadoc
+
+# Generar JavaDocs para todo el proyecto
+javadoc -d docs/javadoc -sourcepath src -subpackages com.anncode.amazonviewer
+```
+Una vez generado, abre el archivo `docs/javadoc/index.html` en cualquier navegador para visualizar la documentación técnica completa.
+
+---
 ## Recursos y Documentación
 
 Para asegurar la transparencia y facilitar la colaboración, este repositorio incluye la siguiente documentación:
 
 * **[Guía de Contribución](./CONTRIBUTING.md):** Contiene los estándares de arquitectura, reglas de estilo de código Java y el flujo de trabajo para enviar Pull Requests.
-* **[Licencia MIT](./LICENSE):** Información legal sobre el uso, modificación y distribución de este software (disponible en Inglés y Español).
 * **[Reporte de Issues](https://github.com/luiscacuango2/AmazonViewer/issues):** Espacio para informar sobre errores detectados o proponer nuevas funcionalidades.
 ---
 ## Créditos de Desarrollo
-* **Autor**: Luis Cacuango
+Este proyecto forma parte de mi ruta de aprendizaje en ingeniería de software. Un agradecimiento especial a **Platzi**.
+
+* **Autor**: Luis Cacuango [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github)](https://github.com/luiscacuango2)
 * **Rol**: Arquitectura de Software y Desarrollo Core.
-* **Tecnologías**: Java Standard Edition, MySQL, JDBC.
+---
 
 ## Licencia
 
-Este proyecto se distribuye con fines educativos bajo los estándares de desarrollo de software para la gestión de datos persistentes.
+Este proyecto se distribuye bajo la **[Licencia MIT](./LICENSE):** con fines educativos bajo los estándares de desarrollo de software para la gestión de datos persistentes.

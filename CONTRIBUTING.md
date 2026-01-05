@@ -47,13 +47,13 @@ Para proponer cambios, siga este procedimiento:
 ## Reporte de Errores
 
 Si identifica un error en la lógica de negocio o en la conexión JDBC:
-1. Abra un **Issue** en GitHub.
+1. Abra un **[Issues](https://github.com/luiscacuango2/AmazonViewer/issues):** en GitHub.
 2. Describa los pasos para reproducir el error.
 3. Adjunte el log de error de la consola o el stacktrace de la excepción SQL.
 
 ---
 
 ## Licencia
-Al contribuir, usted acepta que sus aportes estarán bajo la misma licencia que el proyecto original.
+Al contribuir, usted acepta que sus aportes estarán bajo la misma licencia que el proyecto original. **[Licencia MIT](./LICENSE)**
 
 **Desarrollado con compromiso por la calidad del código.**

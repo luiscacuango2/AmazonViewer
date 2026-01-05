@@ -22,7 +22,7 @@ public abstract class Film {
     /** Duración en minutos (para películas/capítulos) o páginas (para libros) */
     private int duration;
     /** Año de lanzamiento o publicación */
-    private short year;
+    private int year;
     /** Estado de visualización del contenido */
     private boolean viewed;
 
@@ -121,7 +121,7 @@ public abstract class Film {
      * Recupera el año de estreno.
      * @return El año de estreno.
      * */
-    public short getYear() {
+    public int getYear() {
         return year;
     }
 
@@ -129,7 +129,7 @@ public abstract class Film {
      * Asigna el año de estreno.
      * @param year El año a asignar.
      * */
-    public void setYear(short year) {
+    public void setYear(int year) {
         this.year = year;
     }
 

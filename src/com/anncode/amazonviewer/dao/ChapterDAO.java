@@ -69,7 +69,7 @@ public interface ChapterDAO extends IDBConnection {
 
         // QUERY COMPLETA: Traemos todos los datos necesarios para construir Serie y Chapter
         String query = "SELECT c.*, s." + TSerie.TITLE + ", s." + TSerie.GENRE + ", s." + TSerie.CREATOR +
-                ", s." + TSerie.DURATION + ", s." + TSerie.SESSION_QUANTITY +
+                ", s." + TSerie.DURATION + ", s." + TSerie.YEAR + ", s." + TSerie.SESSION_QUANTITY +
                 " FROM " + TChapter.NAME + " AS c " +
                 " INNER JOIN " + TSerie.NAME + " AS s " +
                 " ON c." + TChapter.ID_SERIE + " = s." + TSerie.ID +
@@ -88,6 +88,7 @@ public interface ChapterDAO extends IDBConnection {
                         rs.getString("s." + TSerie.GENRE),
                         rs.getString("s." + TSerie.CREATOR),
                         rs.getInt("s." + TSerie.DURATION),
+                        rs.getInt("s." + TSerie.YEAR),
                         rs.getInt("s." + TSerie.SESSION_QUANTITY)
                 );
                 seriePadre.setId(idSerie);

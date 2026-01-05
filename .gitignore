@@ -27,4 +27,4 @@ Thumbs.db
 *.sql.gz
 *.log
 
-src/com/anncode/amazonviewer/db/DataBase.java
+src/com/anncode/amazonviewer/db/DBConfig.java

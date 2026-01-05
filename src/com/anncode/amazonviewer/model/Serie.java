@@ -33,9 +33,7 @@ public class Serie extends Film {
      * {@code ArrayList<Chapter>} desde la base de datos.
      * </p>
      */
-    public Serie() {
-        // Constructor vacío para permitir instanciación simple en DAOs
-    }
+    public Serie() {}
 
     /**
      * Constructor para inicializar una Serie con sus datos básicos.
@@ -43,10 +41,12 @@ public class Serie extends Film {
      * @param genre Género principal.
      * @param creator Nombre del creador o productora.
      * @param duration Duración total estimada (suma de capítulos).
+     * @param year Año de estreno.
      * @param sessionQuantity Número total de temporadas.
      */
-    public Serie(String title, String genre, String creator, int duration, int sessionQuantity) {
+    public Serie(String title, String genre, String creator, int duration, int year, int sessionQuantity) {
         super(title, genre, creator, duration);
+        this.setYear(year);
         this.sessionQuantity = sessionQuantity;
     }
 
@@ -110,9 +110,10 @@ public class Serie extends Film {
         return  "\n :: SERIE ::" +
                 "\n TÍTULO: " + getTitle() +
                 "\n GÉNERO: " + getGenre() +
-                "\n AÑO: " + getYear() +
                 "\n CREADOR: " + getCreator() +
-                "\n DURACIÓN: " + getDuration();
+                "\n DURACIÓN: " + getDuration() + " min." +
+                "\n AÑO: " + getYear() +
+                "\n TEMPORADAS: " + getSessionQuantity();
     }
 
     /**

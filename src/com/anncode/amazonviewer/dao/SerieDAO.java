@@ -36,25 +36,22 @@ public interface SerieDAO extends IDBConnection {
         try (Connection connection = connectToDB();
              PreparedStatement pstmt = connection.prepareStatement(query);
              ResultSet rs = pstmt.executeQuery()) {
-            // Dentro del método read() de SerieDAO
+
             while (rs.next()) {
-                // Obtenemos los datos de la base de datos
                 String title = rs.getString(TSerie.TITLE);
                 String genre = rs.getString(TSerie.GENRE);
                 String creator = rs.getString(TSerie.CREATOR);
                 int duration = rs.getInt(TSerie.DURATION);
-
-                // Suponiendo que el 5to parámetro es la cantidad de temporadas
-                // y que tienes esa columna en tu DB (por ejemplo TSerie.SESSION_QUANTITY)
                 int year = rs.getInt(TSerie.YEAR);
+                int sessions = rs.getInt(TSerie.SESSION_QUANTITY);
 
-                // LLAMADA CORRECTA CON LOS 5 PARÁMETROS
                 Serie serie = new Serie(
                         title,
                         genre,
                         creator,
                         duration,
-                        year
+                        year,
+                        sessions
                 );
 
                 serie.setId(rs.getInt(TSerie.ID));

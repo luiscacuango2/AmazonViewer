@@ -426,9 +426,16 @@ public class Main implements UserDAO {
         // idType: 1=Movie, 2=Serie, 4=Book, 5=Magazine (Asegúrate que coincidan con tus constantes)
         return switch (idType) {
             case 1 -> movies.stream().filter(m -> m.getId() == id).findFirst().orElse(null);
-            case 2 -> series.stream()
-                    .flatMap(s -> s.getChapters().stream())
-                    .filter(c -> c.getId() == id).findFirst().orElse(null);
+            case 2 -> series.stream().filter(s -> s.getId() == id).findFirst().orElse(null);
+            case 3 -> { // CASO CAPÍTULOS: Buscamos la serie que contiene el capítulo
+                yield series.stream()
+                        .filter(s -> s.getChapters().stream().anyMatch(c -> c.getId() == id))
+                        .map(s -> {
+                            Chapter chapter = s.getChapters().stream()
+                                    .filter(c -> c.getId() == id).findFirst().get();
+                            return "\nSERIE: " + s.getTitle() + chapter.toString();
+                        }).findFirst().orElse(null);
+            }
             case 4 -> books.stream().filter(b -> b.getId() == id).findFirst().orElse(null);
             case 5 -> magazines.stream().filter(ma -> ma.getId() == id).findFirst().orElse(null);
             default -> null;
