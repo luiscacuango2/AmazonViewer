@@ -1,14 +1,14 @@
 # Amazon Viewer: Sistema de Gestión de Contenido Multimedia
 <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white" alt="Java">
-  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
-  <img src="https://img.shields.io/badge/JDBC-005A9C?style=for-the-badge&logo=java&logoColor=white" alt="JDBC">
-  <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux">
-  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git">
-  <img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown">
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
+<img src="https://img.shields.io/badge/JDBC-005A9C?style=for-the-badge&logo=java&logoColor=white" alt="JDBC">
+<img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux">
+<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git">
+<img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown">
 
 > **Estado del Proyecto:** Desarrollo de Arquitectura y Persistencia.
 ---
-## 📋 Resumen Ejecutivo
+## Resumen Ejecutivo
 **Amazon Viewer** es una solución robusta desarrollada en **Java SE** diseñada para la gestión, catalogación y seguimiento de consumo de contenido multimedia (Cine/TV) y editorial. El sistema destaca por su arquitectura desacoplada, implementando el patrón **DAO (Data Access Object)** para garantizar una persistencia de datos íntegra en motores **MySQL**, optimizada específicamente para la zona horaria de Ecuador (GMT-5).
 
 ---
